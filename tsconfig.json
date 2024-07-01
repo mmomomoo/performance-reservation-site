@@ -12,10 +12,15 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "strictNullChecks": true, // null과 undefined에 대한 엄격한 체크 활성화
+    "noImplicitAny": true, // 암묵적인 any 타입 비허용
+    "strictBindCallApply": true, // bind, call, apply 메서드에 대한 엄격한 타입 체크 활성화
+    "forceConsistentCasingInFileNames": true, // 파일 이름 대소문자 일관성 체크 활성화
+    "noFallthroughCasesInSwitch": true, // switch 문의 fallthrough 방지 활성화
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.js"], // JavaScript 파일도 포함
+  "exclude": ["node_modules", "test/**"]
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PerformancesService } from './performances.service';
 import { CreatePerformanceDto } from './dto/create-performance.dto';
 import { UpdatePerformanceDto } from './dto/update-performance.dto';
@@ -7,7 +15,7 @@ import { UpdatePerformanceDto } from './dto/update-performance.dto';
 export class PerformancesController {
   constructor(private readonly performancesService: PerformancesService) {}
 
-  @Post()
+  @Post() //()에 api적기
   create(@Body() createPerformanceDto: CreatePerformanceDto) {
     return this.performancesService.create(createPerformanceDto);
   }
@@ -23,7 +31,10 @@ export class PerformancesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePerformanceDto: UpdatePerformanceDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePerformanceDto: UpdatePerformanceDto
+  ) {
     return this.performancesService.update(+id, updatePerformanceDto);
   }
 
