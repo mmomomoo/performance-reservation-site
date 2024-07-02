@@ -9,6 +9,7 @@ import {
 import { Seat } from './seat.entity';
 import { Reservation } from '../../reservations/entities/reservation.entity';
 import { Bookmark } from '../../bookmarks/entities/bookmark.entity';
+import { Image } from './perfomance-image.entity';
 
 @Entity('performances')
 export class Performance {
@@ -34,9 +35,6 @@ export class Performance {
   @Column({ type: 'int', nullable: false })
   price: number;
 
-  @Column({ type: 'varchar', nullable: true })
-  image?: string;
-
   @Column({ type: 'date', nullable: false })
   dates: Date;
 
@@ -54,4 +52,7 @@ export class Performance {
 
   @OneToMany(() => Bookmark, (bookmark) => bookmark.performance)
   bookmarks: Bookmark[];
+
+  @OneToMany(() => Image, (image) => image.performance)
+  images: Image[];
 }

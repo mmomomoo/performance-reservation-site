@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';

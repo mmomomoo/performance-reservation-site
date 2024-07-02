@@ -15,17 +15,17 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   //회원가입
-  @Post()
+  @Post('/sign-up')
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.create(createAuthDto);
   }
   //로그인
-  @Post()
+  @Post('/sign-in')
   findAll() {
     return this.authService.findAll();
   }
   //로그아웃
-  @Post('')
+  @Post('/sign-out')
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
   }
