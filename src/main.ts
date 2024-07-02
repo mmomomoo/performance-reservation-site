@@ -4,7 +4,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core'; //Nest 애플리케이션의 인스턴스를 생성하는 데 사용
 import { AppModule } from './app.module'; //Nest 애플리케이션의 모든 모듈, 컨트롤러, 서비스가 여기서 연결
 import 'reflect-metadata'; // TypeScript의 데코레이터 기능을 지원하기 위해 사용
-import { PORT } from './constants/env.constant';
 //bootstrap 함수는 애플리케이션을 초기화하고 시작
 async function bootstrap() {
   //NestFactory.create 메서드를 사용하여 AppModule을 기반으로 새로운 Nest 애플리케이션 인스턴스를 생성
@@ -16,6 +15,6 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(PORT);
+  await app.listen(3000);
 }
 bootstrap();
