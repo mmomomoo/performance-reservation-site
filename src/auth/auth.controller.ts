@@ -11,13 +11,13 @@ export class AuthController {
   async signUp(@Body() signUpAuthDto: SignUpAuthDto): Promise<void> {
     return this.authService.signUp(signUpAuthDto);
   }
-  // //로그인
-  // @Post('/sign-in')
-  // async signIn(
-  //   @Body() signInAuthDto: SignInAuthDto
-  // ): Promise<{ accessToken: string }> {
-  //   return this.authService.signIn(signInAuthDto);
-  // }
+  //로그인
+  @Post('/sign-in')
+  async signIn(
+    @Body() signInAuthDto: SignInAuthDto
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    return this.authService.signIn(signInAuthDto);
+  }
   // //로그아웃
   // @Post('/sign-out')
   // async signOut(@Param('id') id: string) {
