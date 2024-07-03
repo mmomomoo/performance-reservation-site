@@ -46,7 +46,7 @@ export class PerformancesController {
   }
 
   // 공연 검색 > 카테고리별
-  @Get('/performances/search/catagory')
+  @Get('/performances/search/category')
   searchCategory() {
     return this.performancesService.searchCategory();
   }

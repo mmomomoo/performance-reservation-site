@@ -44,10 +44,16 @@ export class AuthService {
     signInAuthDto: SignInAuthDto
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = signInAuthDto;
+    console.log('signInAuthDto:', signInAuthDto); // 로그 추가
+
     const existingUser = await this.findByEmail(email);
+    console.log('existingUser:', existingUser);
     if (!existingUser) {
       throw new UnauthorizedException('존재하는 유저가 아닙니다.');
     }
+    console.log('Password:', password);
+    console.log('Hashed Password:', existingUser.password);
+
     const passwordMatched = await bcrypt.compare(
       password,
       existingUser.password
@@ -69,7 +75,10 @@ export class AuthService {
 
   // 이미 존재하는 이메일인가 찾기용 /회원가입, 로그인,
   async findByEmail(email: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { email } });
+    console.log('findByEmail called with email:', email);
+    const user = this.usersRepository.findOne({ where: { email } });
+    console.log('User found:', user);
+    return user;
   }
 
   async refreshToken(authorization: string): Promise<string> {
