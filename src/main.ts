@@ -4,10 +4,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core'; //Nest 애플리케이션의 인스턴스를 생성하는 데 사용
 import { AppModule } from './app.module'; //Nest 애플리케이션의 모든 모듈, 컨트롤러, 서비스가 여기서 연결
 import 'reflect-metadata'; // TypeScript의 데코레이터 기능을 지원하기 위해 사용
+import { ConfigService } from '@nestjs/config';
 //bootstrap 함수는 애플리케이션을 초기화하고 시작
 async function bootstrap() {
   //NestFactory.create 메서드를 사용하여 AppModule을 기반으로 새로운 Nest 애플리케이션 인스턴스를 생성
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+
   app.useGlobalPipes(
     //ValidationPipe를 전역 파이프로 설정하여 모든 들어오는 요청에 대해 데이터 검증 및 변환을 수행
     new ValidationPipe({
@@ -15,6 +18,11 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(3000);
+  const port = configService.get<string>('PORT');
+  if (port) {
+    await app.listen(parseInt(port, 10)); // 포트가 정의되어 있을 때만 listen 호출
+  } else {
+    console.error('PORT environment variable is not defined.');
+  }
 }
 bootstrap();

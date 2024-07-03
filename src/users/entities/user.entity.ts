@@ -12,7 +12,6 @@ import { Reservation } from '../../reservations/entities/reservation.entity';
 import { RefreshToken } from '../../auth/entities/refresh-token.entity';
 import { Bookmark } from '../../bookmarks/entities/bookmark.entity';
 import { UserRole } from './user-role.enum';
-// import { UserRole } from './user-role.enum';
 
 @Entity('users') // 데이터베이스 테이블 이름을 명시적으로 지정
 export class User {

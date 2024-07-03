@@ -1,7 +1,18 @@
-import { Controller, Post, Body, Param, Headers } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Headers,
+  UseGuards,
+  Get,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpAuthDto } from './dto/sign-up-auth.dto';
 import { SignInAuthDto } from './dto/sign-in-auth.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { UserInfo } from '../../util/userinfo.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -16,6 +27,7 @@ export class AuthController {
   async signIn(
     @Body() signInAuthDto: SignInAuthDto
   ): Promise<{ accessToken: string; refreshToken: string }> {
+    console.log('signIn endpoint hit');
     return this.authService.signIn(signInAuthDto);
   }
   // //로그아웃
@@ -24,14 +36,17 @@ export class AuthController {
   //   return this.authService.signOut(+id);
   // }
   //토큰 발급
-  // @Post('/token')
-  // async token(@Headers('authorization') rawToken: string) {
-  //   const token = this.authService.extractTokenFromHeader(rawToken, true);
+  @Post('/refresh-token')
+  async refreshToken(
+    @Headers('authorization') authorization: string
+  ): Promise<string> {
+    console.log('Authorization Header:', authorization);
+    return this.authService.refreshToken(authorization);
+  }
 
-  //   const newToken = this.authService.rotateToken(token, false);
-
-  //   return {
-  //     accessToken: newToken,
-  //   };
-  // }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('email')
+  getEmail(@UserInfo() user: User) {
+    return { email: user.email };
+  }
 }
