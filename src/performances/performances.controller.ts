@@ -6,30 +6,53 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { PerformancesService } from './performances.service';
 import { CreatePerformanceDto } from './dto/create-performance.dto';
 import { UpdatePerformanceDto } from './dto/update-performance.dto';
+import { UserRole } from 'src/users/entities/user-role.enum';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
 
+@UseGuards(RolesGuard)
 @Controller('performances')
 export class PerformancesController {
   constructor(private readonly performancesService: PerformancesService) {}
 
-  @Post() //()에 api적기
-  create(@Body() createPerformanceDto: CreatePerformanceDto) {
-    return this.performancesService.create(createPerformanceDto);
-  }
+  // //공연 등록
+  // @Roles(UserRole.ADMIN)
+  // @Post() //()에 api적기
+  // create(@Body() createPerformanceDto: CreatePerformanceDto): Promise<void> {
+  //   return this.performancesService.create(createPerformanceDto);
+  // }
 
+  //공연 목록 전체 보기
   @Get()
   findAll() {
     return this.performancesService.findAll();
   }
 
+  //공연 상세 보기
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.performancesService.findOne(+id);
   }
 
+  // 공연 검색 > 이름별
+  @Get('/performances/search/name')
+  searchName() {
+    return this.performancesService.searchName();
+  }
+
+  // 공연 검색 > 카테고리별
+  @Get('/performances/search/catagory')
+  searchCategory() {
+    return this.performancesService.searchCategory();
+  }
+
+  //공연 글 수정
+  @Roles(UserRole.ADMIN)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -38,6 +61,8 @@ export class PerformancesController {
     return this.performancesService.update(+id, updatePerformanceDto);
   }
 
+  // 공연 글 삭제
+  @Roles(UserRole.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.performancesService.remove(+id);
