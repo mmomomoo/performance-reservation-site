@@ -17,7 +17,7 @@ import { Seat } from './performances/entities/seat.entity';
 import { RefreshToken } from './auth/entities/refresh-token.entity';
 import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { Bookmark } from './bookmarks/entities/bookmark.entity';
-import { Image } from './performances/entities/perfomance-image.entity';
+import { PerformanceImage } from './performances/entities/perfomance-image.entity';
 
 @Module({
   imports: [
@@ -52,7 +52,7 @@ import { Image } from './performances/entities/perfomance-image.entity';
           Seat,
           RefreshToken,
           Bookmark,
-          Image,
+          PerformanceImage,
         ],
         synchronize: configService.get<boolean>('DB_SYNC'),
         logging: true,

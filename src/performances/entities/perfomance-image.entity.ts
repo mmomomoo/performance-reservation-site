@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import { Performance } from './performance.entity';
 
-@Entity('images')
-export class Image {
+@Entity('performanceImages')
+export class PerformanceImage {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,7 +26,7 @@ export class Image {
   @UpdateDateColumn({ type: 'datetime', nullable: false })
   updatedAt: Date;
 
-  @ManyToOne(() => Performance, (performance) => performance.images)
+  @ManyToOne(() => Performance, (performance) => performance.performanceImages)
   @JoinColumn({ name: 'performanceId' }) // 외래 키 연결
   performance: Performance;
 }
