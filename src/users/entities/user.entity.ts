@@ -11,7 +11,6 @@ import { Reservation } from '../../reservations/entities/reservation.entity';
 import { RefreshToken } from '../../auth/entities/refresh-token.entity';
 import { Bookmark } from '../../bookmarks/entities/bookmark.entity';
 import { UserRole } from './user-role.enum';
-// import { UserRole } from './user-role.enum';
 
 @Entity('users') // 데이터베이스 테이블 이름을 명시적으로 지정
 export class User {
@@ -19,7 +18,7 @@ export class User {
   id: number;
   @Column({ type: 'varchar', unique: true, nullable: false })
   email: string;
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, select: false })
   password: string;
   @Column({ type: 'varchar', nullable: false })
   username: string;

@@ -62,16 +62,48 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
+  //로그아웃
   signOut(id: number) {
     return `This action returns a #${id} auth`;
   }
 
-  // token(id: number) {
-  //   return `This action returns a #${id} auth`;
-  // }
-
   // 이미 존재하는 이메일인가 찾기용 /회원가입, 로그인,
   async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { email } });
+  }
+
+  async refreshToken(authorization: string): Promise<string> {
+    const token = await this.extractTokenFromHeader(authorization);
+    return this.rotateToken(token);
+  }
+
+  async extractTokenFromHeader(authorization: string): Promise<string> {
+    if (!authorization) {
+      throw new UnauthorizedException('인증 헤더가 없습니다.');
+    }
+    const [type, token] = authorization.split(' ');
+
+    if (type !== 'Bearer' || !token) {
+      throw new UnauthorizedException('지원하지 않는 인증 방식입니다.');
+    }
+    return token;
+  }
+
+  private rotateToken(refreshToken: string): string {
+    try {
+      const payload = this.jwtService.verify(refreshToken);
+      const newAccessToken = this.jwtService.sign(
+        { userId: payload.userId },
+        { expiresIn: '15m' }
+      );
+      return newAccessToken;
+    } catch (error) {
+      throw new UnauthorizedException('토큰 갱신에 실패했습니다.');
+    }
+  }
+  async validateUser(payload: any) {
+    return this.usersRepository.findOne({
+      where: { id: payload.sub, role: payload.role },
+    });
   }
 }

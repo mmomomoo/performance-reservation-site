@@ -1,12 +1,16 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
-
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
+import { UnauthorizedException } from '@nestjs/common';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly authService: AuthService
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -15,6 +19,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    // TODO. payload로 전달된 데이터를 통해 실제 유저 정보를 조회해야 해요!
+    const user = await this.authService.validateUser(payload);
+    if (!user) {
+      throw new UnauthorizedException('해당하는 사용자를 찾을 수 없습니다.');
+    }
+
+    return user;
   }
 }
