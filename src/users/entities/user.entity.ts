@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   OneToOne,
   OneToMany,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Reservation } from '../../reservations/entities/reservation.entity';
 import { RefreshToken } from '../../auth/entities/refresh-token.entity';
@@ -42,6 +43,10 @@ export class User {
 
   @UpdateDateColumn({ type: 'datetime', nullable: false })
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
+
   @OneToMany(() => Reservation, (reservation) => reservation.userId)
   reservations: Reservation[];
   @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.userId)
