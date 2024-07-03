@@ -5,11 +5,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Seat } from './seat.entity';
 import { Reservation } from '../../reservations/entities/reservation.entity';
 import { Bookmark } from '../../bookmarks/entities/bookmark.entity';
-import { Image } from './perfomance-image.entity';
+import { PerformanceImage } from './perfomance-image.entity';
 
 @Entity('performances')
 export class Performance {
@@ -35,14 +36,20 @@ export class Performance {
   @Column({ type: 'int', nullable: false })
   price: number;
 
-  @Column({ type: 'date', nullable: false })
-  dates: Date;
+  @Column({ type: 'simple-array', nullable: false })
+  dates: string[];
+
+  @Column({ type: 'simple-array', nullable: false })
+  times: string[];
 
   @CreateDateColumn({ type: 'datetime', nullable: false })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'datetime', nullable: false })
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @OneToMany(() => Seat, (seat) => seat.performance)
   seats: Seat[];
@@ -53,6 +60,9 @@ export class Performance {
   @OneToMany(() => Bookmark, (bookmark) => bookmark.performance)
   bookmarks: Bookmark[];
 
-  @OneToMany(() => Image, (image) => image.performance)
-  images: Image[];
+  @OneToMany(
+    () => PerformanceImage,
+    (performanceImage) => performanceImage.performance
+  )
+  performanceImages: PerformanceImage[];
 }
