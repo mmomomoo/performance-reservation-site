@@ -18,7 +18,7 @@ import { UserRole } from 'src/users/entities/user-role.enum';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { query } from 'express';
+import { PerfomanceCategory } from './entities/category.enum';
 
 @UseGuards(RolesGuard)
 @Controller('performances')
@@ -60,8 +60,8 @@ export class PerformancesController {
 
   // 공연 검색 > 카테고리별
   @Get('/search/category')
-  searchCategory() {
-    return this.performancesService.searchCategory();
+  searchCategory(@Query('category') perfomanceCategory: PerfomanceCategory) {
+    return this.performancesService.searchCategory(perfomanceCategory);
   }
 
   //공연 글 수정
