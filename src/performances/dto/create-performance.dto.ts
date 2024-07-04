@@ -1,5 +1,5 @@
-import { IsIn, IsNotEmpty, IsString } from 'class-validator';
-import { PerfomanceCategory } from '../entities/category.enum';
+import { IsEnum, IsIn, IsNotEmpty, IsString } from 'class-validator';
+import { PerformanceCategory } from '../entities/category.enum';
 
 export class CreatePerformanceDto {
   @IsString()
@@ -11,9 +11,10 @@ export class CreatePerformanceDto {
   description: string;
 
   @IsString()
-  @IsIn(Object.values(PerfomanceCategory))
+  @IsIn(Object.values(PerformanceCategory))
+  @IsEnum(PerformanceCategory)
   @IsNotEmpty({ message: '카테고리를 입력해주세요.' })
-  category: PerfomanceCategory;
+  category: PerformanceCategory;
 
   @IsString()
   @IsNotEmpty({ message: '공연 지역을 입력해주세요.' })
