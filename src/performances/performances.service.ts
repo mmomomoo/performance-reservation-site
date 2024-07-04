@@ -12,10 +12,18 @@ export class PerformancesService {
     private readonly performanceRepository: Repository<Performance>
   ) {}
   //공연 등록
-  create(createPerformanceDto: CreatePerformanceDto) {
-    return 'This action adds a new performance';
+  async create(createPerformanceDto: CreatePerformanceDto): Promise<void> {
+    // const { name, description, category, location, price, dates, times } =
+    const { ...performanceInfo } = createPerformanceDto;
+    await this.performanceRepository.save(performanceInfo);
+    return;
   }
-
+  //공연 글 이미지 등록
+  async imageCreat() {
+    return await this.performanceRepository.find({
+      select: ['id', 'name'],
+    });
+  }
   //공연 전체 조회
   async findAll() {
     return await this.performanceRepository.find({

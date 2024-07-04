@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { PerformancesService } from './performances.service';
 import { CreatePerformanceDto } from './dto/create-performance.dto';
@@ -14,17 +16,26 @@ import { UpdatePerformanceDto } from './dto/update-performance.dto';
 import { UserRole } from 'src/users/entities/user-role.enum';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(RolesGuard)
 @Controller('performances')
 export class PerformancesController {
   constructor(private readonly performancesService: PerformancesService) {}
 
-  // //공연 등록
+  //공연 등록
+  @Roles(UserRole.ADMIN)
+  @Post() //()에 api적기
+  create(@Body() createPerformanceDto: CreatePerformanceDto): Promise<void> {
+    return this.performancesService.create(createPerformanceDto);
+  }
+
+  // //공연 글 사진 등록
   // @Roles(UserRole.ADMIN)
-  // @Post() //()에 api적기
-  // create(@Body() createPerformanceDto: CreatePerformanceDto): Promise<void> {
-  //   return this.performancesService.create(createPerformanceDto);
+  // @Post('/images')
+  // @UseInterceptors(FileInterceptor('file'))
+  // async imageCreate(@UploadedFile() file: Express.Multer.File) {
+  //   await this.performancesService.imageCreate(file);
   // }
 
   //공연 목록 전체 보기

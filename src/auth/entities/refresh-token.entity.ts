@@ -3,19 +3,15 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
   OneToOne,
   JoinColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
-@Entity('refresh_tokens')
+@Entity('refreshTokens')
 export class RefreshToken {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'int', nullable: false })
-  userId: number;
 
   @Column({ type: 'varchar', nullable: true })
   refreshToken: string;
