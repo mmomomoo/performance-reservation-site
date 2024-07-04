@@ -8,10 +8,11 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from '../users/users.module';
 import { User } from 'src/users/entities/user.entity';
+import { RefreshToken } from './entities/refresh-token.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]), // 여기를 통해 UserRepository를 주입받음
+    TypeOrmModule.forFeature([User, RefreshToken]), // 여기를 통해 UserRepository를 주입받음
     UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.registerAsync({

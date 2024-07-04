@@ -15,6 +15,7 @@ export class PerformancesService {
   create(createPerformanceDto: CreatePerformanceDto) {
     return 'This action adds a new performance';
   }
+
   //공연 전체 조회
   async findAll() {
     return await this.performanceRepository.find({

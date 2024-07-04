@@ -11,12 +11,15 @@ import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserRole } from 'src/users/entities/user-role.enum';
 import { JwtService } from '@nestjs/jwt';
+import { RefreshToken } from './entities/refresh-token.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(RefreshToken)
+    private refreshTokenRepository: Repository<RefreshToken>,
     private jwtService: JwtService
   ) {}
   //회원가입
@@ -65,6 +68,13 @@ export class AuthService {
     const payload = { sub: existingUser.id };
     const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
+
+    const refreshTokenEntity = this.refreshTokenRepository.create({
+      refreshToken: refreshToken,
+      user: existingUser,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7일 후 만료
+    });
+    await this.refreshTokenRepository.save(refreshTokenEntity);
 
     return { accessToken, refreshToken };
   }
