@@ -48,7 +48,7 @@ export class User {
 
   @OneToMany(() => Reservation, (reservation) => reservation.userId)
   reservations: Reservation[];
-  @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.userId)
+  @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshToken: RefreshToken;
   @OneToMany(() => Bookmark, (bookmark) => bookmark.userId)
   bookmarks: Bookmark[];

@@ -64,6 +64,10 @@ export class AuthService {
     if (!passwordMatched) {
       throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
+    //기존 리프레쉬 삭제
+    await this.refreshTokenRepository.delete({ user: existingUser });
+    // 지금 로그인 유저랑
+
     // 엑세스토큰 리프레쉬토큰 발급
     const payload = { sub: existingUser.id };
     const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });

@@ -32,5 +32,5 @@ export class SignUpAuthDto {
   @IsString()
   @IsIn(Object.values(UserRole))
   @IsNotEmpty({ message: '일반 계정과 관리자 계정중에 선택해 주세요.' })
-  role: string;
+  role: UserRole;
 }
