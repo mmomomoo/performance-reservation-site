@@ -1,8 +1,15 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  MiddlewareConsumer,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import Joi from 'joi';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 import { HealthModule } from './health/health.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,14 +17,16 @@ import { PerformancesModule } from './performances/performances.module';
 import { ReservationsModule } from './reservations/reservations.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { BookmarksModule } from './bookmarks/bookmarks.module';
+
 import { User } from './users/entities/user.entity';
 import { Reservation } from './reservations/entities/reservation.entity';
 import { Performance } from './performances/entities/performance.entity';
 import { Seat } from './performances/entities/seat.entity';
 import { RefreshToken } from './auth/entities/refresh-token.entity';
-import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { Bookmark } from './bookmarks/entities/bookmark.entity';
 import { PerformanceImage } from './performances/entities/perfomance-image.entity';
+import { AuthMiddleware } from './auth/auth.middleware';
 
 @Module({
   imports: [
@@ -61,6 +70,12 @@ import { PerformanceImage } from './performances/entities/perfomance-image.entit
       }),
       inject: [ConfigService],
     }),
+    JwtModule.registerAsync({
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET_KEY'),
+      }),
+      inject: [ConfigService],
+    }),
     PerformancesModule,
     ReservationsModule,
     UsersModule,
@@ -69,6 +84,15 @@ import { PerformanceImage } from './performances/entities/perfomance-image.entit
     BookmarksModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthMiddleware],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware) // 미들웨어 적용!
+      .forRoutes(
+        { path: 'users/me', method: RequestMethod.GET }
+        // { path: '*', method: RequestMethod.ALL }
+      ); // user/check 엔드포인트에만 적용
+  }
+}
