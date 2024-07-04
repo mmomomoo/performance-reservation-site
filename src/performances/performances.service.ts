@@ -4,7 +4,7 @@ import { UpdatePerformanceDto } from './dto/update-performance.dto';
 import { Performance } from './entities/performance.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
-import { PerfomanceCategory } from './entities/category.enum';
+import { PerformanceCategory } from './entities/category.enum';
 
 @Injectable()
 export class PerformancesService {
@@ -59,10 +59,17 @@ export class PerformancesService {
     return performance;
   }
   //카테고리로 선택해서 검색
-  async searchCategory(perfomanceCategory: PerfomanceCategory) {
-    const performance = await this.performanceRepository.find({
-      where: { category: perfomanceCategory, name: Like(`%${name}%`) }, //SQL의 LIKE 연산자를 사용해서 일부 검색도 가능해게 구현
-    });
+  async searchCategory(name: string, category: PerformanceCategory) {
+    let performance;
+    if (name) {
+      performance = await this.performanceRepository.find({
+        where: { category, name: Like(`%${name}%`) }, //SQL의 LIKE 연산자를 사용해서 일부 검색도 가능해게 구현
+      });
+    } else {
+      performance = await this.performanceRepository.find({
+        where: { category }, //SQL의 LIKE 연산자를 사용해서 일부 검색도 가능해게 구현
+      });
+    }
     performance.sort((a, b) => {
       return b.createdAt.getTime() - a.createdAt.getTime();
     });

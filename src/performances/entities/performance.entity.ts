@@ -11,7 +11,7 @@ import { Seat } from './seat.entity';
 import { Reservation } from '../../reservations/entities/reservation.entity';
 import { Bookmark } from '../../bookmarks/entities/bookmark.entity';
 import { PerformanceImage } from './perfomance-image.entity';
-import { PerfomanceCategory } from './category.enum';
+import { PerformanceCategory } from './category.enum';
 
 @Entity('performances')
 export class Performance {
@@ -26,10 +26,10 @@ export class Performance {
 
   @Column({
     type: 'enum',
-    enum: PerfomanceCategory,
+    enum: PerformanceCategory,
     nullable: false,
   })
-  category: PerfomanceCategory;
+  category: PerformanceCategory;
 
   @Column({ type: 'varchar', nullable: false })
   location: string;
