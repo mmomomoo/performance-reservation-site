@@ -66,7 +66,6 @@ export class AuthService {
     }
     //기존 리프레쉬 삭제
     await this.refreshTokenRepository.delete({ user: existingUser });
-    // 지금 로그인 유저랑
 
     // 엑세스토큰 리프레쉬토큰 발급
     const payload = { sub: existingUser.id };
