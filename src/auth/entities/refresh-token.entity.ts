@@ -18,13 +18,13 @@ export class RefreshToken {
   userId: number;
 
   @Column({ type: 'varchar', nullable: true })
-  refreshToken?: string;
+  refreshToken: string;
 
   @CreateDateColumn({ type: 'datetime', nullable: false })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime', nullable: false })
-  updatedAt: Date;
+  @Column({ type: 'datetime', nullable: false })
+  expiresAt: Date;
 
   @OneToOne(() => User, (user) => user.refreshToken)
   @JoinColumn({ name: 'userId' })
