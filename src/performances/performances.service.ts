@@ -4,6 +4,7 @@ import { UpdatePerformanceDto } from './dto/update-performance.dto';
 import { Performance } from './entities/performance.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
+import { PerfomanceCategory } from './entities/category.enum';
 
 @Injectable()
 export class PerformancesService {
@@ -47,7 +48,7 @@ export class PerformancesService {
     });
     return performance;
   }
-  //이름으로 조회
+  //이름으로 찾아보기
   async searchName(name: string) {
     const performance = await this.performanceRepository.find({
       where: { name: Like(`%${name}%`) }, //SQL의 LIKE 연산자를 사용해서 일부 검색도 가능해게 구현
@@ -57,9 +58,15 @@ export class PerformancesService {
     });
     return performance;
   }
-  //카테고리로 조회
-  searchCategory() {
-    return `This action returns all performances`;
+  //카테고리로 선택해서 검색
+  async searchCategory(perfomanceCategory: PerfomanceCategory) {
+    const performance = await this.performanceRepository.find({
+      where: { category: perfomanceCategory, name: Like(`%${name}%`) }, //SQL의 LIKE 연산자를 사용해서 일부 검색도 가능해게 구현
+    });
+    performance.sort((a, b) => {
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+    return performance;
   }
   //공연 글 업데이트
   update(id: number, updatePerformanceDto: UpdatePerformanceDto) {
