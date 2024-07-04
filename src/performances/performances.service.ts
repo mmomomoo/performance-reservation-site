@@ -3,7 +3,7 @@ import { CreatePerformanceDto } from './dto/create-performance.dto';
 import { UpdatePerformanceDto } from './dto/update-performance.dto';
 import { Performance } from './entities/performance.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class PerformancesService {
@@ -19,7 +19,7 @@ export class PerformancesService {
     return;
   }
   //공연 글 이미지 등록
-  async imageCreat() {
+  async imageCreate() {
     return await this.performanceRepository.find({
       // select: ['id', 'name'],
     });
@@ -27,7 +27,7 @@ export class PerformancesService {
   //공연 전체 조회
   async findAll() {
     return await this.performanceRepository.find({
-      // select: ['id', 'name'],
+      select: ['id', 'name'],
     });
   }
   //공연 상세 조회
@@ -48,8 +48,14 @@ export class PerformancesService {
     return performance;
   }
   //이름으로 조회
-  async searchName() {
-    return `This action returns all performances`;
+  async searchName(name: string) {
+    const performance = await this.performanceRepository.find({
+      where: { name: Like(`%${name}%`) }, //SQL의 LIKE 연산자를 사용해서 일부 검색도 가능해게 구현
+    });
+    performance.sort((a, b) => {
+      return b.createdAt.getTime() - a.createdAt.getTime();
+    });
+    return performance;
   }
   //카테고리로 조회
   searchCategory() {

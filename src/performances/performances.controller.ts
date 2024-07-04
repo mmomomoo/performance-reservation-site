@@ -9,6 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { PerformancesService } from './performances.service';
 import { CreatePerformanceDto } from './dto/create-performance.dto';
@@ -17,6 +18,7 @@ import { UserRole } from 'src/users/entities/user-role.enum';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { query } from 'express';
 
 @UseGuards(RolesGuard)
 @Controller('performances')
@@ -51,13 +53,13 @@ export class PerformancesController {
   }
 
   // 공연 검색 > 이름별
-  @Get('/performances/search/name')
-  searchName() {
-    return this.performancesService.searchName();
+  @Get('/search/name')
+  searchName(@Query('name') name: string) {
+    return this.performancesService.searchName(name);
   }
 
   // 공연 검색 > 카테고리별
-  @Get('/performances/search/category')
+  @Get('/search/category')
   searchCategory() {
     return this.performancesService.searchCategory();
   }
