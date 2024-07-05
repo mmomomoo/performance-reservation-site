@@ -12,11 +12,12 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>
     // private jwtService: JwtService // JWT 토큰 생성을 위해 주입한 서비스
   ) {}
-
+  // 유저 프로필 보기 구현
   async readMe(userPayload: any) {
     const uerId = userPayload.sub;
     return await this.userRepository.findOne({ where: { id: uerId } });
   }
+
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }

@@ -14,9 +14,6 @@ export class PerformanceImage {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', nullable: false })
-  performanceId: number;
-
   @Column({ type: 'varchar', nullable: true })
   imageUrl?: string;
 
@@ -27,6 +24,6 @@ export class PerformanceImage {
   updatedAt: Date;
 
   @ManyToOne(() => Performance, (performance) => performance.performanceImages)
-  @JoinColumn({ name: 'performanceId' }) // 외래 키 연결
+  @JoinColumn({ name: 'performancesId' }) // 외래 키 연결
   performance: Performance;
 }
