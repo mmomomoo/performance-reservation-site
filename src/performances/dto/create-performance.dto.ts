@@ -30,4 +30,7 @@ export class CreatePerformanceDto {
   @IsString()
   @IsNotEmpty({ message: '공연 시간을 입력해주세요.' })
   times: string[];
+
+  @IsNotEmpty({ message: '공연 좌석 수를 입력해주세요.' })
+  seatCount: number;
 }
