@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Performance } from './performance.entity';
 import { Reservation } from '../../reservations/entities/reservation.entity';
@@ -15,8 +16,8 @@ export class Seat {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', nullable: false })
-  performanceId: number;
+  @Column({ type: 'varchar', nullable: false })
+  seatCount: string;
 
   @Column({ type: 'varchar', nullable: false })
   seatNumber: string;
@@ -34,6 +35,7 @@ export class Seat {
   updatedAt: Date;
 
   @ManyToOne(() => Performance, (performance) => performance.seats)
+  @JoinColumn({ name: 'performancesId' })
   performance: Performance;
 
   @OneToMany(() => Reservation, (reservation) => reservation.seat)

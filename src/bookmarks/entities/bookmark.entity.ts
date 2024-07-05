@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Performance } from '../../performances/entities/performance.entity';
@@ -14,12 +15,6 @@ export class Bookmark {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', nullable: false })
-  userId: number;
-
-  @Column({ type: 'int', nullable: false })
-  performanceId: number;
-
   @CreateDateColumn({ type: 'datetime', nullable: false })
   createdAt: Date;
 
@@ -27,8 +22,10 @@ export class Bookmark {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.bookmarks)
+  @JoinColumn({ name: 'userId' }) // 외래 키 연결
   user: User;
 
   @ManyToOne(() => Performance, (performance) => performance.bookmarks)
+  @JoinColumn({ name: 'performancesId' }) // 외래 키 연결
   performance: Performance;
 }

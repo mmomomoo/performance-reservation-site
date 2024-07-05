@@ -46,10 +46,10 @@ export class User {
   @DeleteDateColumn()
   deletedAt?: Date;
 
-  @OneToMany(() => Reservation, (reservation) => reservation.userId)
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
   @OneToOne(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshToken: RefreshToken;
-  @OneToMany(() => Bookmark, (bookmark) => bookmark.userId)
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
   bookmarks: Bookmark[];
 }
