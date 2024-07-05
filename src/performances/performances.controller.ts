@@ -26,7 +26,7 @@ import { Seat } from './entities/seat.entity';
 export class PerformancesController {
   constructor(private readonly performancesService: PerformancesService) {}
 
-  //공연 등록
+  //공연 등록 >> 좌석 수만 등록
   @Roles(UserRole.ADMIN)
   @Post() //()에 api적기
   create(@Body() createPerformanceDto: CreatePerformanceDto): Promise<void> {
@@ -85,10 +85,17 @@ export class PerformancesController {
     return this.performancesService.remove(+id);
   }
 
-  //공연 좌석 등록
+  //공연 좌석 등록 >> 좌석 지정일때
+  @Roles(UserRole.ADMIN)
+  @Post('/:id/seats/register')
+  registerSeats(@Param('id') id: string) {
+    return this.performancesService.registerSeats(+id);
+  }
 
-  //공연 남은 좌석 수 확인 ~
+  //공연 남은 좌석 수 확인
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Get('/:id/seats')
+  @Roles(UserRole.ADMIN, UserRole.USER)
   findOneSeat(@Param('id') id: number): Promise<Seat[]> {
     return this.performancesService.findOneSeat(id);
   }

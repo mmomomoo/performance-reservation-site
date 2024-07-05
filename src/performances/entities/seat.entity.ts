@@ -28,6 +28,9 @@ export class Seat {
   @Column({ type: 'int', nullable: false })
   price: number;
 
+  @Column({ default: false })
+  isReserved: boolean;
+
   @CreateDateColumn({ type: 'datetime', nullable: false })
   createdAt: Date;
 

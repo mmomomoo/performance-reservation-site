@@ -94,6 +94,12 @@ export class PerformancesService {
   remove(id: number) {
     return `This action removes a #${id} performance`;
   }
+
+  //좌석 지정 자리 만들기
+  registerSeats(id: number) {
+    return `This action removes a #${id} performance`;
+  }
+
   // 공연 좌석 파악
   async findOneSeat(performanceId: number): Promise<Seat[]> {
     const performance = await this.performanceRepository.findOne({
@@ -101,7 +107,7 @@ export class PerformancesService {
       relations: ['seats'],
     });
     if (!performance) {
-      throw new Error('Performance not found');
+      throw new Error('좌석을 찾을 수 없습니다.');
     }
     return performance.seats;
   }
