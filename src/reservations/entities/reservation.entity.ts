@@ -18,13 +18,16 @@ export class Reservation {
   id: number;
 
   @Column({ type: 'varchar', nullable: false })
-  performanceName: string;
+  name: string;
 
   @Column({ type: 'varchar', nullable: false })
-  performanceLocation: string;
+  location: string;
 
   @Column({ type: 'enum', enum: Status, nullable: false })
   status: Status;
+
+  @Column({ type: 'int', nullable: false })
+  ticketCount: number;
 
   @CreateDateColumn({ type: 'datetime', nullable: false })
   createdAt: Date;

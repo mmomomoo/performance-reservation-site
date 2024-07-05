@@ -1,26 +1,14 @@
-import { IsNotEmpty, IsNumber, IsString, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsEnum } from 'class-validator';
 import { Status } from '../entities/status.enum';
 
-export class CreateReservationDto {
-  @IsNotEmpty()
-  @IsNumber()
-  userId: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  seatId: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  performanceId: number;
-
+export class CreateReservationWithoutSeatDto {
   @IsNotEmpty()
   @IsString()
   userName: string;
 
-  // @IsNotEmpty()
-  // @IsNumber()
-  // point: number;
+  @IsNotEmpty()
+  @IsNumber()
+  userId: number;
 
   @IsNotEmpty()
   @IsString()
@@ -33,10 +21,6 @@ export class CreateReservationDto {
   @IsNotEmpty()
   @IsNumber()
   price: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  totalPrice: number;
 
   @IsNotEmpty()
   @IsString()
@@ -52,5 +36,9 @@ export class CreateReservationDto {
 
   @IsNotEmpty()
   @IsNumber()
-  seatCount: number;
+  performanceId: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  ticketCount: number;
 }

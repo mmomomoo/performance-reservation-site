@@ -1,6 +1,6 @@
 import { IsEnum, IsIn, IsNotEmpty, IsString } from 'class-validator';
 import { PerformanceCategory } from '../entities/category.enum';
-
+// 작성자 id 담을 수 있게 변경
 export class CreatePerformanceDto {
   @IsString()
   @IsNotEmpty({ message: '공연 이름을 입력해주세요.' })
