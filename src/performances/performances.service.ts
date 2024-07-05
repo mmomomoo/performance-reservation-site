@@ -5,18 +5,29 @@ import { Performance } from './entities/performance.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { PerformanceCategory } from './entities/category.enum';
+import { Seat } from './entities/seat.entity';
 
 @Injectable()
 export class PerformancesService {
   constructor(
     @InjectRepository(Performance)
-    private readonly performanceRepository: Repository<Performance>
+    private readonly performanceRepository: Repository<Performance>,
+    @InjectRepository(Seat)
+    private readonly seatRepository: Repository<Seat>
   ) {}
   //공연 등록
   async create(createPerformanceDto: CreatePerformanceDto): Promise<void> {
     // const { name, description, category, location, price, dates, times } =
-    const { ...performanceInfo } = createPerformanceDto;
-    await this.performanceRepository.save(performanceInfo);
+    const { seatCount, ...performanceInfo } = createPerformanceDto;
+
+    const performance = this.performanceRepository.create(performanceInfo);
+    const savedPerformance = await this.performanceRepository.save(performance);
+
+    const seat = this.seatRepository.create({
+      seatCount,
+      performance: savedPerformance, // 연관 관계 설정
+    });
+    await this.seatRepository.save(seat);
     return;
   }
   //공연 글 이미지 등록

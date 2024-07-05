@@ -16,8 +16,8 @@ export class Seat {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', nullable: false })
-  seatCount: string;
+  @Column({ type: 'int', nullable: false })
+  seatCount: number;
 
   @Column({ type: 'varchar', nullable: false })
   seatNumber: string;
