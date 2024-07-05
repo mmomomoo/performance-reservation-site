@@ -94,4 +94,15 @@ export class PerformancesService {
   remove(id: number) {
     return `This action removes a #${id} performance`;
   }
+  // 공연 좌석 파악
+  async findOneSeat(performanceId: number): Promise<Seat[]> {
+    const performance = await this.performanceRepository.findOne({
+      where: { id: performanceId },
+      relations: ['seats'],
+    });
+    if (!performance) {
+      throw new Error('Performance not found');
+    }
+    return performance.seats;
+  }
 }
