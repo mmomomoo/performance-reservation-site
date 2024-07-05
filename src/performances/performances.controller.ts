@@ -19,6 +19,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PerformanceCategory } from './entities/category.enum';
+import { Seat } from './entities/seat.entity';
 
 @UseGuards(RolesGuard)
 @Controller('performances')
@@ -82,5 +83,13 @@ export class PerformancesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.performancesService.remove(+id);
+  }
+
+  //공연 좌석 등록
+
+  //공연 남은 좌석 수 확인 ~
+  @Get('/:id/seats')
+  findOneSeat(@Param('id') id: number): Promise<Seat[]> {
+    return this.performancesService.findOneSeat(id);
   }
 }
