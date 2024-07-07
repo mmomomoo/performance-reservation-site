@@ -3,17 +3,19 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  // Patch,
   Param,
-  Delete,
+  // Delete,
   UseGuards,
-  UseInterceptors,
-  UploadedFile,
+  // UseInterceptors,
+  // UploadedFile,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PerformancesService } from './performances.service';
 import { CreatePerformanceDto } from './dto/create-performance.dto';
-import { UpdatePerformanceDto } from './dto/update-performance.dto';
+// import { UpdatePerformanceDto } from './dto/update-performance.dto';
 import { UserRole } from 'src/users/entities/user-role.enum';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
@@ -28,12 +30,12 @@ export class PerformancesController {
 
   //공연 등록 >> 좌석 수만 등록
   @Roles(UserRole.ADMIN)
-  @Post() //()에 api적기
+  @Post()
   create(@Body() createPerformanceDto: CreatePerformanceDto): Promise<void> {
     return this.performancesService.create(createPerformanceDto);
   }
 
-  // //공연 글 사진 등록
+  //공연 글 사진 등록
   // @Roles(UserRole.ADMIN)
   // @Post('/images')
   // @UseInterceptors(FileInterceptor('file'))
@@ -59,7 +61,7 @@ export class PerformancesController {
     return this.performancesService.searchName(name);
   }
 
-  // 공연 검색 > 카테고리별
+  // 공연 검색 > 카테고리별 + 이름
   @Get('/search/category')
   searchCategory(
     @Query('name') name: string,
@@ -68,35 +70,34 @@ export class PerformancesController {
     return this.performancesService.searchCategory(name, category);
   }
 
-  //공연 글 수정
-  @Roles(UserRole.ADMIN)
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updatePerformanceDto: UpdatePerformanceDto
-  ) {
-    return this.performancesService.update(+id, updatePerformanceDto);
-  }
+  // //공연 글 수정
+  // @Roles(UserRole.ADMIN)
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updatePerformanceDto: UpdatePerformanceDto
+  // ) {
+  //   return this.performancesService.update(+id, updatePerformanceDto);
+  // }
 
-  // 공연 글 삭제
-  @Roles(UserRole.ADMIN)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.performancesService.remove(+id);
-  }
+  // // 공연 글 삭제
+  // @Roles(UserRole.ADMIN)
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.performancesService.remove(+id);
+  // }
 
-  //공연 좌석 등록 >> 좌석 지정일때
-  @Roles(UserRole.ADMIN)
-  @Post('/:id/seats/register')
-  registerSeats(@Param('id') id: string) {
-    return this.performancesService.registerSeats(+id);
-  }
+  // //공연 좌석 등록 >> 좌석 지정일때
+  // @Roles(UserRole.ADMIN)
+  // @Post('/:id/seats/register')
+  // registerSeats(@Param('id') id: string) {
+  //   return this.performancesService.registerSeats(+id);
+  // }
 
   //공연 남은 좌석 수 확인
   @Roles(UserRole.ADMIN, UserRole.USER)
   @Get('/:id/seats')
-  @Roles(UserRole.ADMIN, UserRole.USER)
-  findOneSeat(@Param('id') id: number): Promise<Seat[]> {
-    return this.performancesService.findOneSeat(id);
+  findOneSeat(@Param('id') id: number): Promise<Partial<Seat>[]> {
+    return this.performancesService.findOneSeat(+id);
   }
 }

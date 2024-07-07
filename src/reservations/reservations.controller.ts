@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  // Patch,
   Param,
   Delete,
 } from '@nestjs/common';
@@ -32,15 +32,15 @@ export class ReservationsController {
   // }
 
   // 예약 확인하기
-  @Get()
+  @Get('/me')
   findAll() {
     return this.reservationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reservationsService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.reservationsService.findOne(+id);
+  // }
 
   // @Patch(':id')
   // update(
@@ -50,8 +50,8 @@ export class ReservationsController {
   //   return this.reservationsService.update(+id, updateReservationDto);
   // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.reservationsService.remove(+id);
+  // }
 }

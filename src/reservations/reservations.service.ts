@@ -82,21 +82,19 @@ export class ReservationsService {
           status: Status.RESERVED,
           ticketCount, // 요청된 티켓 수량
         });
-
         await transactionalEntityManager.save(reservation);
-
         return reservation;
       }
     );
   }
-  findAll() {
-    return `This action returns all reservations`;
+  async findAll() {
+    return await this.reservationRepository
+      .createQueryBuilder('reservation')
+      .leftJoinAndSelect('reservation.performance', 'performance')
+      .select(['reservation.id', 'reservation.name', 'performance.dates'])
+      .orderBy('performance.dates', 'DESC')
+      .getMany();
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} reservation`;
-  }
-
   // update(id: number, updateReservationDto: UpdateReservationDto) {
   //   return `This action updates a #${id} reservation`;
   // }
