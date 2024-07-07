@@ -35,7 +35,7 @@ export class ReservationsService {
 
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('유저를 찾을 수 없습니다.');
     }
 
     const performanceOptions: FindOneOptions<Performance> = {
@@ -45,7 +45,7 @@ export class ReservationsService {
     const performance =
       await this.performanceRepository.findOne(performanceOptions);
     if (!performance) {
-      throw new NotFoundException('Performance not found');
+      throw new NotFoundException('공연을 찾을 수 없습니다.');
     }
 
     const seatOptions: FindOneOptions<Seat> = {
@@ -53,16 +53,16 @@ export class ReservationsService {
     };
     const seat = await this.seatRepository.findOne(seatOptions);
     if (!seat) {
-      throw new BadRequestException('No seats available');
+      throw new BadRequestException('좌석을 찾을 수 없습니다.');
     }
 
     const totalCost = seat.price * ticketCount;
     if (totalCost > user.point) {
-      throw new BadRequestException('Insufficient points');
+      throw new BadRequestException('포인트가 부족합니다.');
     }
 
     if (seat.seatCount < ticketCount) {
-      throw new BadRequestException('Not enough seats available');
+      throw new BadRequestException('현 좌석 수가 원하시는 좌석보다 적습니다.');
     }
 
     seat.seatCount -= ticketCount;
