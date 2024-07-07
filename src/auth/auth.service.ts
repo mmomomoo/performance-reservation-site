@@ -23,7 +23,7 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
   //회원가입
-  async signUp(signUpAuthDto: SignUpAuthDto): Promise<void> {
+  async signUp(signUpAuthDto: SignUpAuthDto): Promise<User> {
     const { email, password, userName, role } = signUpAuthDto;
 
     const existingUser = await this.findByEmail(email);
@@ -40,22 +40,22 @@ export class AuthService {
       role: role as UserRole,
     });
 
-    await this.usersRepository.save(user);
+    return await this.usersRepository.save(user);
   }
   //로그인
   async signIn(
     signInAuthDto: SignInAuthDto
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { email, password } = signInAuthDto;
-    console.log('signInAuthDto:', signInAuthDto); // 로그 추가
+    // console.log('signInAuthDto:', signInAuthDto); // 로그 추가 > 이건 다음에 참고하려고 두었어요.
 
     const existingUser = await this.findByEmail(email);
-    console.log('existingUser:', existingUser);
+    // console.log('existingUser:', existingUser);
     if (!existingUser) {
       throw new UnauthorizedException('존재하는 유저가 아닙니다.');
     }
-    console.log('Password:', password);
-    console.log('Hashed Password:', existingUser.password);
+    // console.log('Password:', password);
+    // console.log('Hashed Password:', existingUser.password);
 
     const passwordMatched = await bcrypt.compare(
       password,
@@ -88,9 +88,9 @@ export class AuthService {
 
   // 이미 존재하는 이메일인가 찾기용 /회원가입, 로그인,
   async findByEmail(email: string): Promise<User | null> {
-    console.log('findByEmail called with email:', email);
+    // console.log('findByEmail called with email:', email);
     const user = this.usersRepository.findOne({ where: { email } });
-    console.log('User found:', user);
+    // console.log('User found:', user);
     return user;
   }
 

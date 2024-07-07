@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePerformanceDto } from './dto/create-performance.dto';
 import { UpdatePerformanceDto } from './dto/update-performance.dto';
 import { Performance } from './entities/performance.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
+import * as _ from 'lodash';
+// import { parse } from 'csv-parse/sync';
 import { PerformanceCategory } from './entities/category.enum';
 import { Seat } from './entities/seat.entity';
 
@@ -31,11 +33,44 @@ export class PerformancesService {
     return;
   }
   //공연 글 이미지 등록
-  async imageCreate() {
-    return await this.performanceRepository.find({
-      // select: ['id', 'name'],
-    });
-  }
+  // async imageCreate(file: Express.Multer.File) {
+  //   if (!file.originalname.endsWith('.csv')) {
+  //     throw new BadRequestException('CSV 파일만 업로드 가능합니다.');
+  //   }
+
+  //   const csvContent = file.buffer.toString();
+
+  //   let parseResult;
+  //   try {
+  //     parseResult = parse(csvContent, {
+  //       header: true,
+  //       skipEmptyLines: true,
+  //     });
+  //   } catch (error) {
+  //     throw new BadRequestException('CSV 파싱에 실패했습니다.');
+  //   }
+
+  //   const performanceData = parseResult.data as any[];
+
+  //   for (const performanceData of performancesData) {
+  //     if (
+  //       _.isNil(performanceData.name) ||
+  //       _.isNil(performanceData.description)
+  //     ) {
+  //       throw new BadRequestException(
+  //         'CSV 파일은 name과 description 컬럼을 포함해야 합니다.'
+  //       );
+  //     }
+  //   }
+
+  //   const createImageDtos = performanceData.map((performanceData) => ({
+  //     name: performanceData.name,
+  //     description: performanceData.description,
+  //   }));
+
+  //   await this.performanceRepository.save(createImageDtos);
+  // }
+
   //공연 전체 조회
   async findAll() {
     return await this.performanceRepository.find({
@@ -78,7 +113,7 @@ export class PerformancesService {
       });
     } else {
       performance = await this.performanceRepository.find({
-        where: { category }, //SQL의 LIKE 연산자를 사용해서 일부 검색도 가능해게 구현
+        where: { category },
       });
     }
     performance.sort((a, b) => {
@@ -101,7 +136,7 @@ export class PerformancesService {
   }
 
   // 공연 좌석 파악
-  async findOneSeat(performanceId: number): Promise<Seat[]> {
+  async findOneSeat(performanceId: number): Promise<Partial<Seat>[]> {
     const performance = await this.performanceRepository.findOne({
       where: { id: performanceId },
       relations: ['seats'],
@@ -109,6 +144,10 @@ export class PerformancesService {
     if (!performance) {
       throw new Error('좌석을 찾을 수 없습니다.');
     }
-    return performance.seats;
+    // console.log(`Found performance: ${performance}`);
+    return performance.seats.map((seats: Seat) => ({
+      seatNumber: seats.seatNumber,
+      seatCount: seats.seatCount,
+    }));
   }
 }

@@ -16,10 +16,10 @@ export class Seat {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int', nullable: false })
+  @Column({ type: 'int', nullable: false, name: 'seat_count' })
   seatCount: number;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, name: 'seat_number' })
   seatNumber: string;
 
   @Column({ type: 'varchar', nullable: false })

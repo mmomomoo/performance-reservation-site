@@ -10,10 +10,11 @@ import { ConfigService } from '@nestjs/config';
 import { Performance } from 'src/performances/entities/performance.entity';
 import { Seat } from '../performances/entities/seat.entity';
 import { PerformancesModule } from 'src/performances/performances.module';
+import { Reservation } from './entities/reservation.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Performance, Seat]),
+    TypeOrmModule.forFeature([User, Performance, Seat, Reservation]),
     UsersModule,
     PerformancesModule,
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),

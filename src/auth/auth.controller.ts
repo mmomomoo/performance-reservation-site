@@ -17,11 +17,13 @@ import { User } from 'src/users/entities/user.entity';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   //회원가입
   @Post('/sign-up')
-  async signUp(@Body() signUpAuthDto: SignUpAuthDto): Promise<void> {
+  async signUp(@Body() signUpAuthDto: SignUpAuthDto): Promise<User> {
     return this.authService.signUp(signUpAuthDto);
   }
+
   //로그인
   @Post('/sign-in')
   async signIn(
@@ -35,6 +37,7 @@ export class AuthController {
   // async signOut(@Param('id') id: string) {
   //   return this.authService.signOut(+id);
   // }
+
   //토큰 발급
   @Post('/refresh-token')
   async refreshToken(
